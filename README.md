@@ -10,7 +10,7 @@ using ManifoldProjections
 x = randn(4)
 M = Sphere()
 retract!(M,x)
-@assert isapprox(norm(x),1)
+@assert norm(x) ≈ 1
 v = randn(4)
 project_tangent!(M,v,x)
 @assert abs(v'*x) < 1e-8
