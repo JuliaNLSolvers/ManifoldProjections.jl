@@ -1,5 +1,8 @@
 name = "ManifoldProjections"
 uuid = "3b4b92ee-f45a-11e8-092a-f506aad58062"
+license = "MIT"
 authors = ["Patrick Kofod Mogensen <patrick.mogensen@gmail.com>"]
 version = "0.1.0"
-license = "MIT"
+
+[deps]
+NLSolversBase = "d41bc354-129a-5804-8e4c-c37616107c6c"
