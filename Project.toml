@@ -1,0 +1,4 @@
+name = "ManifoldProjections"
+uuid = "3b4b92ee-f45a-11e8-092a-f506aad58062"
+authors = ["Patrick Kofod Mogensen <patrick.mogensen@gmail.com>"]
+version = "0.1.0"
