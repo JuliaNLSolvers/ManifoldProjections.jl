@@ -13,6 +13,8 @@ module ManifoldProjections
 # P.-A. Absil, R. Mahony, R. Sepulchre
 # Princeton University Press, 2008
 
+import NLSolversBase
+using LinearAlgebra: normalize!
 
 abstract type Manifold
 end
