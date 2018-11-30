@@ -20,8 +20,8 @@ abstract type Manifold
 end
 
 # fallback for out-of-place ops
-project_tangent(M::Manifold, x) = project_tangent!(M, similar(x), x)
 retract(M::Manifold, x) = retract!(M, copy(x))
+project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), x)
 
 # Fake objective function implementing a retraction
 mutable struct ManifoldObjective{T<:NLSolversBase.AbstractObjective} <: NLSolversBase.AbstractObjective
