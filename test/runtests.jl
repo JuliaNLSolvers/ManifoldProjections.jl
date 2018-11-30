@@ -15,10 +15,10 @@ v = randn(4)+im*randn(4)
 @test (norm(x + ε*v) - 1) < ε^(3/2) # the tangent vector is such that x+εv is on the manifold up to O(ε^2)
 
 for M in (Stiefel_CholQR(), Stiefel_SVD())
-    X = randn(4,2)
+    X = randn(4,2) + im*randn(4,2)
     retract!(M,X)
     @test X'X ≈ I
-    V = randn(4,2)
+    V = randn(4,2)+im*randn(4,2)
     @test project_tangent(M,V,X) == project_tangent!(M,V,X)
     @test norm((X + ε*V)'*(X+ε*V) - I) < ε^(3/2)
 end

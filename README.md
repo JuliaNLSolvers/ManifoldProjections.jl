@@ -1,6 +1,6 @@
-A Julia library to handle manifold. This is useful for minimizing functions or solving differential equations defined on manifolds.
+A Julia library to handle projections on manifolds. This is useful for minimizing functions or solving differential equations defined on manifolds.
 
-Currently, the sphere `{x ∈ K^n, |x| = 1}` and the Stiefel manifold `{X ∈ K^{n × m}, X'*X = I}` as well as independent copies of this are supported.
+Currently, the sphere `{x ∈ K^n, |x| = 1}` and the Stiefel manifold `{X ∈ K^{n × m}, X'*X = I}` as well as independent copies of these manifolds are supported.
 
 Example usage:
 
