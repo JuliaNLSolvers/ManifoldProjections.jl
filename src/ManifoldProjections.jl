@@ -165,4 +165,11 @@ function get_inner(m::ProductManifold, x, i::Integer)
     end
 end
 
+
+export Manifold,
+    Flat, Sphere, Stiefel, Stiefel_CholQR, Stiefel_SVD, PowerManifold, ProductManifold,
+    project_tangent, project_tangent!,
+    retract, retract!,
+    get_inner
+
 end # module
