@@ -66,11 +66,17 @@ retract!(M::Flat, x) = x
 project_tangent(M::Flat, g, x) = g
 project_tangent!(M::Flat, g, x) = g
 
-"""Spherical manifold {|x| = 1}."""
-struct Sphere <: Manifold
+"""Spherical manifold {||x|| = r}."""
+struct Sphere{T} <: Manifold where {T <: Real}
+    r::T
 end
-retract!(S::Sphere, x) = normalize!(x)
-project_tangent!(S::Sphere,g,x) = (g .-= real(dot(x,g)).*x)
+Sphere() = Sphere(nothing)
+# Sphere(r::T) where {T <: Real} = r < 0 ? error("radius has to be a positive number!") : Sphere{T}(r)
+retract!(S::Sphere{<:Nothing}, x) = normalize!(x)
+retract!(S::Sphere, x) = rmul!(x, S.r/norm(x))
+# TODO: is it the expected behavior to call retract! and change x here?
+project_tangent!(S::Sphere,g,x) = (retract!(S,x); g .-= (real(dot(x,g))/S.r^2).*x)
+project_tangent!(S::Sphere{<:Nothing},g,x) = (retract!(S,x); g .-= real(dot(x,g)).*x)
 
 """
 N x n matrices with orthonormal columns, i.e. such that X'X = I.
