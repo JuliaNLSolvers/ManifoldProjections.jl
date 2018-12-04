@@ -69,7 +69,7 @@ project_tangent!(M::Flat, g, x) = g
 """Spherical manifold {||x|| = r}."""
 struct Sphere{T} <: Manifold where {T <: Real}
     r::T
-    Sphere(r) = r < 0 ? error("radius has to be a positive number!") : new{T}(r)
+    Sphere(r::T) where {T <: Real} = r < 0 ? error("radius has to be a positive number!") : new{T}(r)
 end
 Sphere() = Sphere(1)
 retract!(S::Sphere, x) = rmul!(x, S.r/norm(x))
