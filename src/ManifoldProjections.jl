@@ -66,11 +66,14 @@ retract!(M::Flat, x) = x
 project_tangent(M::Flat, g, x) = g
 project_tangent!(M::Flat, g, x) = g
 
-"""Spherical manifold {|x| = 1}."""
-struct Sphere <: Manifold
+"""Spherical manifold {||x|| = r}."""
+struct Sphere{T} <: Manifold where {T <: Real}
+    r::T
+    Sphere(r::T) where {T <: Real} = r < 0 ? error("radius has to be a positive number!") : new{T}(r)
 end
-retract!(S::Sphere, x) = normalize!(x)
-project_tangent!(S::Sphere,g,x) = (g .-= real(dot(x,g)).*x)
+Sphere() = Sphere(1)
+retract!(S::Sphere, x) = rmul!(x, S.r/norm(x))
+project_tangent!(S::Sphere,g,x) = (g .-= (real(dot(x,g))/S.r^2).*x)
 
 """
 N x n matrices with orthonormal columns, i.e. such that X'X = I.
