@@ -9,10 +9,8 @@ x = randn(4)+im*randn(4)
 M = Sphere()
 retract!(M,x)
 @test norm(x) ≈ 1
-x = randn(4)+im*randn(4)
 v = randn(4)+im*randn(4)
 @test project_tangent(M,v,x) == project_tangent!(M,v,x)
-@test norm(x) ≈ 1
 @test abs(real(v'*x)) < 1e-8
 ε = 1e-8
 @test (norm(x + ε*v) - 1) < ε^(3/2) # the tangent vector is such that x+εv is on the manifold up to O(ε^2)
@@ -23,10 +21,8 @@ x = randn(4)+im*randn(4)
 M = Sphere(r)
 retract!(M,x)
 @test norm(x) ≈ r
-x = randn(4)+im*randn(4)
 v = randn(4)+im*randn(4)
 @test project_tangent(M,v,x) == project_tangent!(M,v,x)
-@test norm(x) ≈ r
 @test abs(real(v'*x)) < 1e-8
 @test (norm(x + ε*v) - r) < ε^(3/2) # the tangent vector is such that x+εv is on the manifold up to O(ε^2)
 

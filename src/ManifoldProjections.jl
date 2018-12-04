@@ -21,7 +21,7 @@ end
 
 # fallback for out-of-place ops
 retract(M::Manifold, x) = retract!(M, copy(x))
-project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), copy(x))
+project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), x)
 
 # Fake objective function implementing a retraction
 mutable struct ManifoldObjective{T<:NLSolversBase.AbstractObjective} <: NLSolversBase.AbstractObjective
@@ -69,22 +69,11 @@ project_tangent!(M::Flat, g, x) = g
 """Spherical manifold {||x|| = r}."""
 struct Sphere{T} <: Manifold where {T <: Real}
     r::T
-    function Sphere(r)
-        if r == nothing
-            new{Nothing}(nothing)
-        elseif typeof(r) <: Real
-            r < 0 ? error("radius has to be a positive number!") : new{T}(r)
-        else
-            error("radius has to be a real number or nothing")
-        end
-    end
+    Sphere(r) = r < 0 ? error("radius has to be a positive number!") : new{T}(r)
 end
-Sphere() = Sphere(nothing)
-retract!(S::Sphere{<:Nothing}, x) = normalize!(x)
+Sphere() = Sphere(1)
 retract!(S::Sphere, x) = rmul!(x, S.r/norm(x))
-# TODO: is it the expected behavior to call retract! and change x here?
-project_tangent!(S::Sphere,g,x) = (retract!(S,x); g .-= (real(dot(x,g))/S.r^2).*x)
-project_tangent!(S::Sphere{<:Nothing},g,x) = (retract!(S,x); g .-= real(dot(x,g)).*x)
+project_tangent!(S::Sphere,g,x) = (g .-= (real(dot(x,g))/S.r^2).*x)
 
 """
 N x n matrices with orthonormal columns, i.e. such that X'X = I.
