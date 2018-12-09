@@ -20,8 +20,20 @@ abstract type Manifold
 end
 
 # fallback for out-of-place ops
+"Returns a point that corresponds to the retraction of the given point `x` back onto the Manifold `M`"
 retract(M::Manifold, x) = retract!(M, copy(x))
+"Retracts a given point `x` back onto the Manifold `M`"
+function retract!(M::Manifold, x) end
+"""
+Returns the projection of the given vector `g` into the tangent space on the Manifold `M` around the point `x`.
+`x` is assumed to lie on the manifold. This is not checked!
+"""
 project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), x)
+"""
+Projects the given vector `g` into the tangent space on the Manifold `M` around the point `x`.
+`x` is assumed to lie on the manifold. This is not checked!
+"""
+function project_tangent!(M::Manifold, g, x) end
 
 # Fake objective function implementing a retraction
 mutable struct ManifoldObjective{T<:NLSolversBase.AbstractObjective} <: NLSolversBase.AbstractObjective
