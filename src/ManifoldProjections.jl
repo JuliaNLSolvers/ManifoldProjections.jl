@@ -127,6 +127,9 @@ struct PowerManifold<:Manifold
     "Number of embedded manifolds"
     outer_dims::Tuple
 end
+PowerManifold(m::Manifold, inner_dim::Int, outer_dim::Int) = ProductManifold(m, Tuple(inner_dim), Tuple(outer_dim))
+PowerManifold(m::Manifold, inner_dim::Tuple, outer_dim::Int) = ProductManifold(m, inner_dim, Tuple(outer_dim))
+PowerManifold(m::Manifold, inner_dim::Int, outer_dim::Tuple) = ProductManifold(m, Tuple(inner_dim), outer_dim)
 function retract!(m::PowerManifold, x)
     for i=1:prod(m.outer_dims) # TODO: use for i in LinearIndices(m.outer_dims)?
         retract!(m.inner_manifold,get_inner(m, x, i))
@@ -157,6 +160,9 @@ struct ProductManifold<:Manifold
     dims1::Tuple
     dims2::Tuple
 end
+ProductManifold(m1::Manifold, m2::Manifold, dim1::Int, dim2::Int) = ProductManifold(m1, m2, Tuple(dim1), Tuple(dim2))
+ProductManifold(m1::Manifold, m2::Manifold, dim1::Tuple, dim2::Int) = ProductManifold(m1, m2, dim1, Tuple(dim2))
+ProductManifold(m1::Manifold, m2::Manifold, dim1::Int, dim2::Tuple) = ProductManifold(m1, m2, Tuple(dim1), dim2)
 function retract!(m::ProductManifold, x)
     retract!(m.m1, get_inner(m,x,1))
     retract!(m.m2, get_inner(m,x,2))
