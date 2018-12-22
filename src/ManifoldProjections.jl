@@ -20,19 +20,13 @@ abstract type Manifold
 end
 
 # fallback for out-of-place ops
-"Returns a point that corresponds to the retraction of the given point `x` back onto the Manifold `M`"
 retract(M::Manifold, x) = retract!(M, copy(x))
-"Retracts a given point `x` back onto the Manifold `M`"
-function retract!(M::Manifold, x) end
+
 """
-Returns the projection of the given vector `g` into the tangent space on the Manifold `M` around the point `x`.
-`x` is assumed to lie on the manifold. This is not checked!
+    project_tangent(M::Manifold, g, x)
+Return the projection of the given vector `g` into the tangent space on the Manifold `M` around the point `x` (assumed to lie on `M`).
 """
 project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), x)
-"""
-Projects the given vector `g` into the tangent space on the Manifold `M` around the point `x`.
-`x` is assumed to lie on the manifold. This is not checked!
-"""
 function project_tangent!(M::Manifold, g, x) end
 
 # Fake objective function implementing a retraction
@@ -120,16 +114,10 @@ Multiple copies of the same manifold. Points are stored as inner_dims x outer_di
 e.g. the product of 2x2 Stiefel manifolds of dimension N x n would be a N x n x 2 x 2 matrix.
 """
 struct PowerManifold<:Manifold
-    "Type of embedded manifold"
     inner_manifold::Manifold
-    "Dimension of the embedded manifolds"
     inner_dims::Tuple
-    "Number of embedded manifolds"
     outer_dims::Tuple
 end
-PowerManifold(m::Manifold, inner_dim::Int, outer_dim::Int) = ProductManifold(m, Tuple(inner_dim), Tuple(outer_dim))
-PowerManifold(m::Manifold, inner_dim::Tuple, outer_dim::Int) = ProductManifold(m, inner_dim, Tuple(outer_dim))
-PowerManifold(m::Manifold, inner_dim::Int, outer_dim::Tuple) = ProductManifold(m, Tuple(inner_dim), outer_dim)
 function retract!(m::PowerManifold, x)
     for i=1:prod(m.outer_dims) # TODO: use for i in LinearIndices(m.outer_dims)?
         retract!(m.inner_manifold,get_inner(m, x, i))
@@ -160,9 +148,6 @@ struct ProductManifold<:Manifold
     dims1::Tuple
     dims2::Tuple
 end
-ProductManifold(m1::Manifold, m2::Manifold, dim1::Int, dim2::Int) = ProductManifold(m1, m2, Tuple(dim1), Tuple(dim2))
-ProductManifold(m1::Manifold, m2::Manifold, dim1::Tuple, dim2::Int) = ProductManifold(m1, m2, dim1, Tuple(dim2))
-ProductManifold(m1::Manifold, m2::Manifold, dim1::Int, dim2::Tuple) = ProductManifold(m1, m2, Tuple(dim1), dim2)
 function retract!(m::ProductManifold, x)
     retract!(m.m1, get_inner(m,x,1))
     retract!(m.m2, get_inner(m,x,2))

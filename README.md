@@ -2,7 +2,8 @@ A Julia library to handle projections on manifolds. This is useful for minimizin
 
 Currently, the sphere `{x ∈ K^n, ||x|| = r}` and the Stiefel manifold `{X ∈ K^{n × m}, X'*X = I}` as well as independent copies of these manifolds are supported.
 
-The projections implemented are retract and project_tangent (both are also available inplace `!`).
+The projections implemented are `retract` and `project_tangent`.
+
 ```
 retract(M::Manifold, x) = retract!(M, copy(x))
 ```
@@ -12,10 +13,6 @@ project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), x)
 ```
 Projects the given vector `g` into the tangent space on the Manifold `M` around the point `x`.
 `x` is assumed to lie on the manifold. This is not checked!
-
-To combine Manifolds one can use `PowerManifold` and `ProductManifold`.
-The constructor of `PowerManifold` takes the exponentiated manifold `M`, the dimensions of this manifold `inner_dims` and the exponents `outer_dims`.
-The constructor of `ProductManifold` takes the two manifolds `m1` and `m2` and their respective dimensions `dims1` and `dims2` as arguments.
 
 Example usage:
 
