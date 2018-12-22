@@ -26,8 +26,8 @@ retract(M::Manifold, x) = retract!(M, copy(x))
     project_tangent(M::Manifold, g, x)
 Return the projection of the given vector `g` into the tangent space on the Manifold `M` around the point `x` (assumed to lie on `M`).
 """
+function project_tangent!(M::Manifold, g, x) end,
 project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), x)
-function project_tangent!(M::Manifold, g, x) end
 
 # Fake objective function implementing a retraction
 mutable struct ManifoldObjective{T<:NLSolversBase.AbstractObjective} <: NLSolversBase.AbstractObjective
