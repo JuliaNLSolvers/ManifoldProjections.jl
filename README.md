@@ -1,3 +1,5 @@
+Note: this package is not under active development. Check out https://github.com/JuliaManifolds/Manifolds.jl instead.
+
 A Julia library to handle projections on manifolds. This is useful for minimizing functions or solving differential equations defined on manifolds.
 
 Currently, the sphere `{x ∈ K^n, ||x|| = r}` and the Stiefel manifold `{X ∈ K^{n × m}, X'*X = I}` as well as independent copies of these manifolds are supported.
