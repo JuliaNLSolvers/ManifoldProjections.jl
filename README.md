@@ -17,3 +17,4 @@ v = randn(4)
 project_tangent!(M,v,x)
 @assert abs(v'*x) < 1e-8
 ```
+This is faster than using phrasing the projection as a non-linear optimization problem  as the generic code in [DiffEqCallbacks](https://github.com/SciML/DiffEqCallbacks.jl) does. 
