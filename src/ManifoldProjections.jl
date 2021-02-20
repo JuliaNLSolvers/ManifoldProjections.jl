@@ -21,7 +21,13 @@ end
 
 # fallback for out-of-place ops
 retract(M::Manifold, x) = retract!(M, copy(x))
+
+"""
+    project_tangent(M::Manifold, g, x)
+Return the projection of the given vector `g` into the tangent space on the Manifold `M` around the point `x` (assumed to lie on `M`).
+"""
 project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), x)
+function project_tangent!(M::Manifold, g, x) end
 
 # Fake objective function implementing a retraction
 mutable struct ManifoldObjective{T<:NLSolversBase.AbstractObjective} <: NLSolversBase.AbstractObjective
@@ -108,11 +114,8 @@ Multiple copies of the same manifold. Points are stored as inner_dims x outer_di
 e.g. the product of 2x2 Stiefel manifolds of dimension N x n would be a N x n x 2 x 2 matrix.
 """
 struct PowerManifold<:Manifold
-    "Type of embedded manifold"
     inner_manifold::Manifold
-    "Dimension of the embedded manifolds"
     inner_dims::Tuple
-    "Number of embedded manifolds"
     outer_dims::Tuple
 end
 function retract!(m::PowerManifold, x)

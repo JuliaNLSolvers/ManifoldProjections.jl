@@ -4,6 +4,18 @@ A Julia library to handle projections on manifolds. This is useful for minimizin
 
 Currently, the sphere `{x ∈ K^n, ||x|| = r}` and the Stiefel manifold `{X ∈ K^{n × m}, X'*X = I}` as well as independent copies of these manifolds are supported.
 
+The projections implemented are `retract` and `project_tangent`.
+
+```
+retract(M::Manifold, x) = retract!(M, copy(x))
+```
+retracts the given point `x` back onto the Manifold `M`.
+```
+project_tangent(M::Manifold, g, x) = project_tangent!(M, copy(g), x)
+```
+Projects the given vector `g` into the tangent space on the Manifold `M` around the point `x`.
+`x` is assumed to lie on the manifold. This is not checked!
+
 Example usage:
 
 ```julia
